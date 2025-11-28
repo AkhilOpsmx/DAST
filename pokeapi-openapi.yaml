@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   title: PokeAPI (No Auth)
   description: "Public Pokemon API for testing with OWASP ZAP. No authentication required."
-  version: "1.0.0"
+  version: "2.0.0"
 host: "pokeapi.co"
 basePath: "/api/v2"
 schemes:
@@ -16,33 +16,164 @@ paths:
   /pokemon:
     get:
       summary: "List all Pokemon"
+      description: "Get paginated list of Pokemon."
       parameters:
         - name: limit
           in: query
+          description: "Maximum number of results to return"
           required: false
           type: integer
+          format: int32
           default: 20
         - name: offset
           in: query
+          description: "Offset for pagination"
           required: false
           type: integer
+          format: int32
           default: 0
       responses:
         200:
-          description: "OK"
+          description: "Pokemon list"
           schema:
             type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                nullable: true
+              previous:
+                type: string
+                nullable: true
+              results:
+                type: array
+                items:
+                  $ref: "#/definitions/ResourceRef"
 
   /pokemon/{name}:
     get:
-      summary: "Get Pokemon by name or ID"
+      summary: "Get Pokemon details by name or ID"
+      description: "Retrieve detailed information for a Pokemon by name or numeric ID."
       parameters:
         - name: name
           in: path
+          description: "Pokemon name or ID"
           required: true
           type: string
+          example: "pikachu"
       responses:
         200:
-          description: "OK"
+          description: "Pokemon details"
           schema:
-            type: object
+            $ref: "#/definitions/Pokemon"
+
+  /ability/{id}:
+    get:
+      summary: "Get Pokemon ability details"
+      description: "Retrieve ability information by numeric ID."
+      parameters:
+        - name: id
+          in: path
+          description: "Ability ID"
+          required: true
+          type: integer
+          format: int32
+          example: 65
+      responses:
+        200:
+          description: "Ability details"
+          schema:
+            $ref: "#/definitions/Ability"
+
+  /type/{id}:
+    get:
+      summary: "Get Pokemon type details"
+      description: "Retrieve type information by numeric ID."
+      parameters:
+        - name: id
+          in: path
+          description: "Type ID"
+          required: true
+          type: integer
+          format: int32
+          example: 3
+      responses:
+        200:
+          description: "Type details"
+          schema:
+            $ref: "#/definitions/Type"
+
+definitions:
+  ResourceRef:
+    type: object
+    properties:
+      name:
+        type: string
+      url:
+        type: string
+
+  Pokemon:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      height:
+        type: integer
+      weight:
+        type: integer
+      base_experience:
+        type: integer
+      abilities:
+        type: array
+        items:
+          $ref: "#/definitions/PokemonAbility"
+
+  PokemonAbility:
+    type: object
+    properties:
+      ability:
+        type: object
+        properties:
+          name:
+            type: string
+          url:
+            type: string
+      is_hidden:
+        type: boolean
+      slot:
+        type: integer
+
+  Ability:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      effect_entries:
+        type: array
+        items:
+          type: object
+          properties:
+            effect:
+              type: string
+            short_effect:
+              type: string
+
+  Type:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      damage_relations:
+        type: object
+        properties:
+          double_damage_from:
+            type: array
+            items:
+              $ref: "#/definitions/ResourceRef"
