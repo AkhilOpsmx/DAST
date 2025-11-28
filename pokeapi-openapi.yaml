@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: PokeAPI (No Auth)
-  description: Public Pokémon API for testing with OWASP ZAP. No authentication required.
+  description: "Public Pokemon API for testing with OWASP ZAP. No authentication required."
   version: "2.0"
 
 servers:
@@ -10,7 +10,7 @@ servers:
 paths:
   /pokemon:
     get:
-      summary: List all Pokémon
+      summary: List all Pokemon
       parameters:
         - name: limit
           in: query
@@ -25,8 +25,8 @@ paths:
             default: 0
           example: 0
       responses:
-        '200':
-          description: Pokémon list
+        "200":
+          description: Pokemon list
           content:
             application/json:
               schema:
@@ -50,7 +50,7 @@ paths:
 
   /pokemon/{name}:
     get:
-      summary: Get Pokémon details by name or ID
+      summary: Get Pokemon details by name or ID
       parameters:
         - name: name
           in: path
@@ -59,8 +59,8 @@ paths:
             type: string
           example: pikachu
       responses:
-        '200':
-          description: Pokémon details
+        "200":
+          description: Pokemon details
           content:
             application/json:
               schema:
@@ -95,7 +95,7 @@ paths:
 
   /ability/{id}:
     get:
-      summary: Get Pokémon ability details
+      summary: Get Pokemon ability details
       parameters:
         - name: id
           in: path
@@ -104,7 +104,7 @@ paths:
             type: integer
           example: 65
       responses:
-        '200':
+        "200":
           description: Ability details
           content:
             application/json:
@@ -127,7 +127,7 @@ paths:
 
   /type/{id}:
     get:
-      summary: Get Pokémon type details
+      summary: Get Pokemon type details
       parameters:
         - name: id
           in: path
@@ -136,8 +136,8 @@ paths:
             type: integer
           example: 3
       responses:
-        '200':
-          description: Pokémon type details
+        "200":
+          description: Pokemon type details
           content:
             application/json:
               schema:
@@ -159,4 +159,3 @@ paths:
                               type: string
                             url:
                               type: string
-
