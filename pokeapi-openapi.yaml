@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: PokeAPI (No Auth)
+  description: Public Pokémon API for testing with OWASP ZAP. No authentication required.
+  version: "2.0"
+
+servers:
+  - url: https://pokeapi.co/api/v2
+
+paths:
+  /pokemon:
+    get:
+      summary: List all Pokémon
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+          example: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          example: 0
+      responses:
+        '200':
+          description: Pokémon list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                  next:
+                    type: string
+                  previous:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        url:
+                          type: string
+
+  /pokemon/{name}:
+    get:
+      summary: Get Pokémon details by name or ID
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+          example: pikachu
+      responses:
+        '200':
+          description: Pokémon details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  height:
+                    type: integer
+                  weight:
+                    type: integer
+                  base_experience:
+                    type: integer
+                  abilities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        ability:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            url:
+                              type: string
+                        is_hidden:
+                          type: boolean
+                        slot:
+                          type: integer
+
+  /ability/{id}:
+    get:
+      summary: Get Pokémon ability details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 65
+      responses:
+        '200':
+          description: Ability details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  effect_entries:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        effect:
+                          type: string
+                        short_effect:
+                          type: string
+
+  /type/{id}:
+    get:
+      summary: Get Pokémon type details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          example: 3
+      responses:
+        '200':
+          description: Pokémon type details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  damage_relations:
+                    type: object
+                    properties:
+                      double_damage_from:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            url:
+                              type: string
+
